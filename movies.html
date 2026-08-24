@@ -21,7 +21,7 @@ body {
 header {
     background: #111;
     color: white;
-    padding: 15px;
+    padding: 18px;
     text-align: center;
 }
 
@@ -33,7 +33,7 @@ header h1 {
 nav {
     background: #111;
     display: flex;
-    gap: 22px;
+    gap: 25px;
     overflow-x: auto;
     padding: 12px 15px;
     white-space: nowrap;
@@ -54,16 +54,17 @@ nav a {
 }
 
 .search input {
-    width: 100%;
+    width: 90%;
     border: none;
     outline: none;
     font-size: 16px;
 }
 
 .featured {
-    height: 380px;
-    background: linear-gradient(90deg, #111, transparent),
-                url("movie-featured.jpg") center/cover;
+    height: 330px;
+    background:
+        linear-gradient(90deg, #111, transparent),
+        url("the-old-guard.jpg") center/cover;
     color: white;
     display: flex;
     align-items: flex-end;
@@ -79,59 +80,8 @@ nav a {
     padding: 20px 15px;
 }
 
-.section-title {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-}
-
-.section-title h2 {
-    margin: 0 0 15px;
-}
-
-.movies {
-    display: flex;
-    gap: 15px;
-    overflow-x: auto;
-}
-
-.movie {
-    min-width: 145px;
-    background: white;
-    border-radius: 10px;
-    overflow: hidden;
-    box-shadow: 0 2px 8px #ccc;
-}
-
-.movie img {
-    width: 100%;
-    height: 205px;
-    object-fit: cover;
-}
-
-.movie-info {
-    padding: 10px;
-}
-
-.movie-info h3 {
-    margin: 0;
-    font-size: 15px;
-}
-
-.movie-info p {
-    margin: 6px 0 0;
-    color: #777;
-    font-size: 13px;
-}
-
-.movie a {
-    display: block;
-    background: #111;
-    color: white;
-    text-align: center;
-    padding: 9px;
-    text-decoration: none;
-    font-weight: bold;
+.section h2 {
+    margin-bottom: 15px;
 }
 
 .categories {
@@ -149,14 +99,50 @@ nav a {
     font-weight: bold;
 }
 
-@media (max-width: 600px) {
-    .featured {
-        height: 350px;
-    }
+.movies {
+    display: flex;
+    gap: 15px;
+    overflow-x: auto;
+}
 
-    .featured h2 {
-        font-size: 26px;
-    }
+.movie {
+    min-width: 150px;
+    max-width: 150px;
+    background: white;
+    border-radius: 10px;
+    overflow: hidden;
+    box-shadow: 0 2px 8px #ccc;
+}
+
+.movie img {
+    width: 100%;
+    height: 215px;
+    object-fit: cover;
+}
+
+.movie-info {
+    padding: 10px;
+}
+
+.movie-info h3 {
+    margin: 0;
+    font-size: 15px;
+}
+
+.movie-info p {
+    margin: 6px 0;
+    color: #777;
+    font-size: 13px;
+}
+
+.movie a {
+    display: block;
+    background: #111;
+    color: white;
+    text-align: center;
+    padding: 10px;
+    text-decoration: none;
+    font-weight: bold;
 }
 </style>
 </head>
@@ -164,7 +150,7 @@ nav a {
 <body>
 
 <header>
-    <h1>NextRealm</h1>
+    <h1>NextRealm Movies</h1>
 </header>
 
 <nav>
@@ -172,7 +158,7 @@ nav a {
     <a href="movies.html">Movies</a>
     <a href="#">African</a>
     <a href="#">Western</a>
-    <a href="#">Shorts</a>
+    <a href="#">Series</a>
 </nav>
 
 <div class="search">
@@ -181,60 +167,90 @@ nav a {
 </div>
 
 <section class="featured">
+
     <div>
-        <h2>Featured Movie</h2>
-        <p>Watch the latest movies on NextRealm</p>
+        <h2>The Old Guard</h2>
+        <p>Action • 2020</p>
     </div>
+
 </section>
 
 <section class="section">
 
-    <div class="section-title">
-        <h2>🔥 Top Picks</h2>
-    </div>
+    <h2>🔥 Top Picks</h2>
 
     <div class="categories">
         <div class="category">🌍 Global</div>
         <div class="category">🎬 Western</div>
         <div class="category">🇳🇬 African</div>
-        <div class="category">🇰🇷 K-Drama</div>
+        <div class="category">📺 Series</div>
     </div>
 
 </section>
 
 <section class="section">
 
-    <div class="section-title">
-        <h2>🎬 Latest Movies</h2>
-    </div>
+    <h2>🎬 Latest Movies & Series</h2>
 
     <div class="movies">
 
-        <div class="movie">
-            <img src="movie1.jpg" alt="Movie poster">
-            <div class="movie-info">
-                <h3>Movie Title One</h3>
-                <p>Action • 2026</p>
-            </div>
-            <a href="movie1.html">View</a>
-        </div>
+        <!-- THE OLD GUARD -->
 
         <div class="movie">
-            <img src="movie2.jpg" alt="Movie poster">
+
+            <img src="the-old-guard.jpg"
+                 alt="The Old Guard">
+
             <div class="movie-info">
-                <h3>Movie Title Two</h3>
-                <p>Drama • 2026</p>
+
+                <h3>The Old Guard</h3>
+
+                <p>Movies 1 & 2 • Action</p>
+
             </div>
-            <a href="movie2.html">View</a>
+
+            <a href="the-old-guard.html">View</a>
+
         </div>
 
+
+        <!-- LIONESS -->
+
         <div class="movie">
-            <img src="movie3.jpg" alt="Movie poster">
+
+            <img src="lioness.jpg"
+                 alt="Lioness">
+
             <div class="movie-info">
-                <h3>Movie Title Three</h3>
-                <p>Action • 2026</p>
+
+                <h3>Lioness</h3>
+
+                <p>All Seasons • Series</p>
+
             </div>
-            <a href="movie3.html">View</a>
+
+            <a href="lioness.html">View</a>
+
+        </div>
+
+
+        <!-- DAY OF THE DEAD -->
+
+        <div class="movie">
+
+            <img src="day-of-the-dead.jpg"
+                 alt="Day of the Dead Bloodline">
+
+            <div class="movie-info">
+
+                <h3>Day of the Dead</h3>
+
+                <p>Bloodline • Horror</p>
+
+            </div>
+
+            <a href="day-of-the-dead.html">View</a>
+
         </div>
 
     </div>
