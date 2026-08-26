@@ -2,1227 +2,996 @@
 <html lang="en">
 <head>
 <meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-
+<meta name="viewport" content="width=device-width,initial-scale=1.0">
 <title>NextRealm Movies</title>
 
 <style>
-* {
-    box-sizing: border-box;
+*{box-sizing:border-box;margin:0;padding:0}
+
+body{
+  font-family:Arial,Helvetica,sans-serif;
+  background:#f7f7f7;
+  color:#151515;
+  overflow-x:hidden;
 }
 
-html {
-    scroll-behavior: smooth;
+/* TOP NAVIGATION */
+.top{
+  position:sticky;
+  top:0;
+  z-index:50;
+  background:#111;
+  color:white;
+  padding:16px 12px 10px;
 }
 
-body {
-    margin: 0;
-    font-family: Arial, Helvetica, sans-serif;
-    background: #f7f7f7;
-    color: #111;
+.nav{
+  display:flex;
+  gap:28px;
+  overflow-x:auto;
+  white-space:nowrap;
+  scrollbar-width:none;
+  align-items:center;
 }
 
-/* ================= HEADER ================= */
-
-header {
-    position: sticky;
-    top: 0;
-    z-index: 1000;
-    background: #111;
-    color: white;
+.nav::-webkit-scrollbar,
+.categories::-webkit-scrollbar,
+.cards::-webkit-scrollbar{
+  display:none;
 }
 
-.nav {
-    display: flex;
-    align-items: center;
-    gap: 25px;
-    height: 60px;
-    padding: 0 15px;
-    overflow-x: auto;
-    overflow-y: hidden;
-    white-space: nowrap;
+.nav a{
+  color:white;
+  text-decoration:none;
+  font-size:17px;
+  font-weight:bold;
+  flex:none;
+  padding:8px 2px;
 }
 
-.nav::-webkit-scrollbar {
-    display: none;
+.nav a.active{
+  color:#1683ff;
+  border-bottom:3px solid #1683ff;
 }
 
-.nav a {
-    flex: 0 0 auto;
-    color: white;
-    text-decoration: none;
-    font-size: 15px;
-    font-weight: bold;
+.more{
+  margin-left:auto;
+  background:#ffd7c0;
+  color:#111;
+  border-radius:30px;
+  padding:9px 15px;
+  flex:none;
+  font-size:20px;
 }
 
-.nav a:hover {
-    color: #1e90ff;
+/* SEARCH */
+.search{
+  margin:14px auto 8px;
+  max-width:680px;
+  background:rgba(255,255,255,.82);
+  border-radius:35px;
+  padding:13px 20px;
+  display:flex;
+  align-items:center;
+  gap:10px;
 }
 
-.menu {
-    flex: 0 0 auto;
-    margin-left: auto;
-    border: none;
-    background: #ffd0b5;
-    width: 42px;
-    height: 42px;
-    border-radius: 50%;
-    font-size: 21px;
+.search span{
+  font-size:25px;
 }
 
-/* ================= HERO ================= */
-
-.hero {
-    position: relative;
-    height: 430px;
-    overflow: hidden;
-    background: #111;
+.search input{
+  border:0;
+  outline:0;
+  background:transparent;
+  width:100%;
+  font-size:17px;
 }
 
-.hero-slide {
-    position: absolute;
-    inset: 0;
-    opacity: 0;
-    transition: opacity 1s ease;
+/* HERO */
+.hero{
+  position:relative;
+  height:430px;
+  overflow:hidden;
+  background:#222;
 }
 
-.hero-slide.active {
-    opacity: 1;
+.hero img{
+  width:100%;
+  height:100%;
+  object-fit:cover;
+  display:block;
 }
 
-.hero-slide img {
-    width: 100%;
-    height: 100%;
-    object-fit: cover;
+.hero:after{
+  content:"";
+  position:absolute;
+  inset:0;
+  background:linear-gradient(
+    to top,
+    rgba(0,0,0,.78),
+    rgba(0,0,0,.05) 65%
+  );
 }
 
-.hero-dark {
-    position: absolute;
-    inset: 0;
-    background: linear-gradient(
-        to bottom,
-        rgba(0,0,0,.15),
-        rgba(0,0,0,.05) 40%,
-        rgba(0,0,0,.9)
-    );
+.heroText{
+  position:absolute;
+  z-index:3;
+  bottom:30px;
+  left:25px;
+  color:white;
 }
 
-.hero-info {
-    position: absolute;
-    left: 20px;
-    right: 20px;
-    bottom: 25px;
-    color: white;
+.heroText h1{
+  font-size:32px;
+  margin-bottom:7px;
 }
 
-.hero-info h1 {
-    margin: 0 0 6px;
-    font-size: 30px;
+.heroText p{
+  font-size:15px;
+  opacity:.9;
 }
 
-.hero-info p {
-    margin: 0 0 15px;
+.dots{
+  position:absolute;
+  z-index:4;
+  right:25px;
+  bottom:25px;
+  color:white;
+  letter-spacing:5px;
 }
 
-.hero-button {
-    display: inline-block;
-    background: #1687ff;
-    color: white;
-    text-decoration: none;
-    padding: 11px 20px;
-    border-radius: 25px;
-    font-weight: bold;
+/* QUICK BUTTONS */
+.quick{
+  display:flex;
+  gap:14px;
+  overflow-x:auto;
+  padding:18px 20px;
+  background:white;
+  scrollbar-width:none;
 }
 
-/* ================= SEARCH ================= */
-
-.search {
-    position: absolute;
-    z-index: 10;
-    top: 75px;
-    left: 6%;
-    right: 6%;
-    display: flex;
-    align-items: center;
-    background: rgba(255,255,255,.85);
-    border-radius: 30px;
-    padding: 11px 18px;
+.quick button{
+  flex:none;
+  border:0;
+  border-radius:30px;
+  padding:14px 25px;
+  background:#ededed;
+  font-size:16px;
+  font-weight:bold;
 }
 
-.search span {
-    font-size: 22px;
-    margin-right: 10px;
+/* SECTION */
+section{
+  background:white;
+  padding:18px 0 25px;
+  margin-bottom:8px;
 }
 
-.search input {
-    width: 100%;
-    border: none;
-    outline: none;
-    background: transparent;
-    font-size: 16px;
+.sectionTitle{
+  padding:0 20px 14px;
+  display:flex;
+  justify-content:space-between;
+  align-items:center;
 }
 
-/* ================= QUICK FILTERS ================= */
-
-.quick {
-    display: flex;
-    gap: 12px;
-    padding: 16px 15px 5px;
-    overflow-x: auto;
-    white-space: nowrap;
+.sectionTitle h2{
+  font-size:25px;
 }
 
-.quick::-webkit-scrollbar {
-    display: none;
+.sectionTitle h2:before{
+  content:"";
+  display:inline-block;
+  width:10px;
+  height:27px;
+  background:#28d6ae;
+  border-radius:8px;
+  margin-right:10px;
+  vertical-align:-4px;
 }
 
-.quick button {
-    flex: 0 0 auto;
-    border: none;
-    border-radius: 25px;
-    padding: 11px 20px;
-    font-weight: bold;
+.arrow{
+  font-size:28px;
 }
 
-/* ================= SECTIONS ================= */
-
-.section {
-    padding: 18px 0 5px;
+/* CATEGORY STRIP */
+.categories{
+  display:flex;
+  gap:42px;
+  overflow-x:auto;
+  padding:0 20px 17px;
+  white-space:nowrap;
+  scrollbar-width:none;
 }
 
-.section-heading {
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
-    padding: 0 15px 12px;
+.categories span{
+  font-size:20px;
+  font-weight:bold;
+  color:#888;
+  flex:none;
 }
 
-.section-heading h2 {
-    margin: 0;
-    font-size: 22px;
+.categories span:first-child{
+  color:#087df5;
 }
 
-.section-heading h2::before {
-    content: "";
-    display: inline-block;
-    width: 9px;
-    height: 21px;
-    border-radius: 10px;
-    background: #20d6b5;
-    margin-right: 8px;
-    vertical-align: -3px;
+/* MOVIE ROWS */
+.cards{
+  display:flex;
+  gap:18px;
+  overflow-x:auto;
+  padding:0 20px 12px;
+  scrollbar-width:none;
 }
 
-/* ================= CATEGORY ROW ================= */
-
-.category-row {
-    display: flex;
-    gap: 30px;
-    padding: 0 15px 14px;
-    overflow-x: auto;
-    white-space: nowrap;
+.card{
+  width:205px;
+  flex:none;
+  cursor:pointer;
 }
 
-.category-row::-webkit-scrollbar {
-    display: none;
+.poster{
+  width:205px;
+  height:285px;
+  border-radius:15px;
+  overflow:hidden;
+  position:relative;
+  background:#ddd;
 }
 
-.category-row button {
-    flex: 0 0 auto;
-    border: none;
-    background: transparent;
-    color: #888;
-    font-size: 16px;
-    font-weight: bold;
+.poster img{
+  width:100%;
+  height:100%;
+  object-fit:cover;
 }
 
-.category-row button:first-child {
-    color: #1687ff;
+.rank{
+  position:absolute;
+  top:7px;
+  left:7px;
+  background:#ffd21c;
+  color:#111;
+  border-radius:7px;
+  padding:7px 10px;
+  font-weight:bold;
+  font-size:15px;
 }
 
-/* ================= MOVIE ROW ================= */
-
-.movie-scroll {
-    overflow-x: auto;
-    overflow-y: hidden;
-    padding: 0 15px 18px;
+.badge{
+  position:absolute;
+  top:7px;
+  right:7px;
+  background:#ff3e79;
+  color:white;
+  border-radius:7px;
+  padding:7px 9px;
+  font-weight:bold;
+  font-size:13px;
 }
 
-.movie-scroll::-webkit-scrollbar {
-    display: none;
+.cardName{
+  font-size:17px;
+  font-weight:bold;
+  margin-top:10px;
+  line-height:1.25;
 }
 
-.movie-row {
-    display: flex;
-    gap: 14px;
-    width: max-content;
+.cardInfo{
+  color:#888;
+  margin-top:5px;
+  font-size:13px;
 }
 
-/*
-    25 cards are placed in one horizontal row.
-    The viewer swipes sideways to see them.
-*/
-
-.movie-card {
-    flex: 0 0 125px;
-    width: 125px;
-    cursor: pointer;
+/* SECOND ROW */
+.secondRow{
+  margin-top:18px;
 }
 
-.poster {
-    position: relative;
-    width: 125px;
-    height: 180px;
-    overflow: hidden;
-    border-radius: 10px;
-    background: linear-gradient(135deg,#222,#555);
-    box-shadow: 0 3px 9px rgba(0,0,0,.18);
+/* COMING SOON */
+.coming .poster{
+  position:relative;
 }
 
-.poster img {
-    width: 100%;
-    height: 100%;
-    object-fit: cover;
+.date{
+  position:absolute;
+  top:9px;
+  left:9px;
+  background:#222;
+  color:white;
+  border-radius:7px;
+  padding:8px 10px;
+  font-weight:bold;
 }
 
-.poster-placeholder {
-    position: absolute;
-    inset: 0;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    text-align: center;
-    color: white;
-    font-weight: bold;
-    padding: 10px;
-    background: linear-gradient(135deg,#111,#444);
+/* MODAL */
+.modal{
+  position:fixed;
+  inset:0;
+  z-index:100;
+  background:rgba(0,0,0,.9);
+  display:none;
+  align-items:center;
+  justify-content:center;
+  padding:20px;
 }
 
-.movie-title {
-    margin-top: 8px;
-    font-size: 14px;
-    font-weight: bold;
-    line-height: 1.3;
+.modal.show{
+  display:flex;
 }
 
-.movie-meta {
-    margin-top: 4px;
-    color: #888;
-    font-size: 11px;
+.modalBox{
+  background:#171717;
+  color:white;
+  width:100%;
+  max-width:650px;
+  max-height:90vh;
+  overflow:auto;
+  border-radius:18px;
+  padding:20px;
 }
 
-/* ================= MORE MENU ================= */
-
-.menu-panel {
-    position: fixed;
-    z-index: 3000;
-    top: 0;
-    right: -290px;
-    width: 280px;
-    height: 100%;
-    background: #111;
-    color: white;
-    padding: 25px;
-    transition: .3s;
+.close{
+  float:right;
+  border:0;
+  background:#ff3b30;
+  color:white;
+  width:38px;
+  height:38px;
+  border-radius:50%;
+  font-size:20px;
 }
 
-.menu-panel.open {
-    right: 0;
+.modalPoster{
+  width:170px;
+  height:240px;
+  object-fit:cover;
+  border-radius:12px;
+  display:block;
+  margin:15px auto;
 }
 
-.menu-panel button {
-    float: right;
-    border: none;
-    background: none;
-    color: white;
-    font-size: 28px;
+.modalBox h2{
+  text-align:center;
+  margin:10px 0;
 }
 
-.menu-panel a {
-    display: block;
-    color: white;
-    text-decoration: none;
-    padding: 16px 0;
-    border-bottom: 1px solid #333;
+.modalBox p{
+  text-align:center;
+  color:#ccc;
+  line-height:1.5;
 }
 
-/* ================= MOVIE WINDOW ================= */
-
-.movie-window {
-    display: none;
-    position: fixed;
-    z-index: 4000;
-    inset: 0;
-    background: rgba(0,0,0,.85);
-    padding: 20px;
-    overflow-y: auto;
+.actions{
+  display:flex;
+  gap:12px;
+  justify-content:center;
+  margin-top:20px;
 }
 
-.movie-window.show {
-    display: block;
+.actions a,
+.actions button{
+  border:0;
+  border-radius:30px;
+  padding:13px 25px;
+  font-weight:bold;
+  text-decoration:none;
+  font-size:15px;
 }
 
-.movie-box {
-    max-width: 480px;
-    margin: 30px auto;
-    background: white;
-    border-radius: 15px;
-    overflow: hidden;
+.watch{
+  background:#087df5;
+  color:white;
 }
 
-.movie-box img {
-    width: 100%;
-    height: 350px;
-    object-fit: cover;
+.download{
+  background:#22c55e;
+  color:white;
 }
 
-.movie-details {
-    padding: 20px;
-}
+/* MOBILE */
+@media(max-width:600px){
+  .nav{
+    gap:25px;
+  }
 
-.close {
-    float: right;
-    border: none;
-    width: 35px;
-    height: 35px;
-    border-radius: 50%;
-    font-size: 20px;
-}
+  .nav a{
+    font-size:16px;
+  }
 
-.buttons {
-    display: flex;
-    gap: 10px;
-    margin-top: 20px;
-}
+  .hero{
+    height:390px;
+  }
 
-.buttons a {
-    flex: 1;
-    padding: 12px;
-    text-align: center;
-    border-radius: 25px;
-    text-decoration: none;
-    font-weight: bold;
-}
+  .heroText h1{
+    font-size:27px;
+  }
 
-.watch {
-    background: #1687ff;
-    color: white;
-}
+  .card,
+  .poster{
+    width:145px;
+  }
 
-.download {
-    background: #111;
-    color: white;
-}
+  .poster{
+    height:205px;
+  }
 
-/* ================= AGE GATE ================= */
+  .cardName{
+    font-size:15px;
+  }
 
-.age-gate {
-    display: none;
-    position: fixed;
-    z-index: 5000;
-    inset: 0;
-    background: rgba(0,0,0,.95);
-    color: white;
-    align-items: center;
-    justify-content: center;
-    padding: 20px;
-}
+  .categories{
+    gap:38px;
+  }
 
-.age-gate.show {
-    display: flex;
-}
-
-.age-box {
-    max-width: 400px;
-    text-align: center;
-    background: #181818;
-    padding: 30px;
-    border-radius: 18px;
-}
-
-.age-box h2 {
-    color: #ff4d88;
-}
-
-.age-buttons {
-    display: flex;
-    gap: 10px;
-}
-
-.age-buttons button {
-    flex: 1;
-    padding: 12px;
-    border: none;
-    border-radius: 25px;
-    font-weight: bold;
-}
-
-/* ================= FOOTER ================= */
-
-footer {
-    background: #111;
-    color: #aaa;
-    text-align: center;
-    padding: 30px 15px;
-    margin-top: 30px;
-}
-
-/* ================= MOBILE ================= */
-
-@media(max-width:600px) {
-
-    .nav {
-        gap: 27px;
-    }
-
-    .hero {
-        height: 390px;
-    }
-
-    .hero-info h1 {
-        font-size: 26px;
-    }
-
-    .movie-card {
-        flex-basis: 120px;
-        width: 120px;
-    }
-
-    .poster {
-        width: 120px;
-        height: 175px;
-    }
+  .categories span{
+    font-size:19px;
+  }
 }
 </style>
 </head>
 
 <body>
 
-<!-- ================= NAVIGATION ================= -->
+<!-- TOP NAVIGATION -->
+<header class="top">
 
-<header>
+  <div class="nav">
 
-<nav class="nav">
+    <a href="index.html" class="active">Home</a>
+    <a href="#">Shorts</a>
+    <a href="#">Africa</a>
+    <a href="#">Western TV</a>
+    <a href="#">Anime</a>
+    <a href="#">Movie</a>
+    <a href="#">K-Drama</a>
 
-<a href="index.html">Home</a>
-<a href="#shorts">Shorts</a>
-<a href="#africa">Africa</a>
-<a href="#western">Western TV</a>
-<a href="#anime">Anime</a>
-<a href="#movie">Movie</a>
-<a href="#kdrama">K-Drama</a>
+    <div class="more">⌄</div>
 
-<button class="menu" onclick="openMenu()">☰</button>
+  </div>
 
-</nav>
+  <div class="search">
+    <span>🔍</span>
+    <input
+      id="searchInput"
+      type="search"
+      placeholder="Search movies, series, anime..."
+    >
+  </div>
 
 </header>
 
 
-<!-- ================= FEATURED MOVIES ================= -->
+<!-- AUTOMATIC FEATURED MOVIE -->
+<div class="hero">
 
-<section class="hero" id="hero"></section>
+  <img id="heroImage" src="movie-posters/lanterns.jpg">
 
-<div class="search">
+  <div class="heroText">
+    <h1 id="heroTitle">Lanterns</h1>
+    <p id="heroDescription">
+      Discover movies and series on NextRealm.
+    </p>
+  </div>
 
-<span>🔍</span>
-
-<input
-id="search"
-type="search"
-placeholder="Search movies, series, anime..."
-oninput="searchMovies()">
+  <div class="dots" id="heroDots">● ○ ○ ○ ○ ○ ○ ○ ○ ○</div>
 
 </div>
 
 
-<!-- ================= QUICK FILTERS ================= -->
-
+<!-- QUICK CATEGORIES -->
 <div class="quick">
 
-<button>🌍 All</button>
-<button>🎬 Shorts</button>
-<button>🔔 Upcoming</button>
-<button>🔥 Updating</button>
+  <button>🌍 All</button>
+  <button>🎬 Shorts</button>
+  <button>🔔 Upcoming</button>
+  <button>🔥 Updating</button>
 
 </div>
 
 
-<!-- ================= TOP PICKS ================= -->
+<!-- TOP PICKS -->
+<section>
 
-<section class="section" id="movie">
+  <div class="sectionTitle">
+    <h2>Top Picks</h2>
+    <span class="arrow">›</span>
+  </div>
 
-<div class="section-heading">
+  <div class="categories">
 
-<h2>Top Picks</h2>
+    <span>Global</span>
+    <span>Western</span>
+    <span>Movie</span>
+    <span>K-Drama</span>
+    <span>Anime</span>
+    <span>Upcoming</span>
+    <span>Hot Search</span>
 
-</div>
+  </div>
 
-<div class="category-row">
-
-<button>Global</button>
-<button>Western</button>
-<button>Movie</button>
-<button>K-Drama</button>
-<button>Anime</button>
-<button>Upcoming</button>
-<button>Hot Search</button>
-
-</div>
-
-<div class="movie-scroll">
-
-<div class="movie-row" id="top-picks"></div>
-
-</div>
+  <div class="cards" id="topPicks"></div>
+  <div class="cards secondRow" id="topPicks2"></div>
 
 </section>
 
 
-<!-- ================= ALL OTHER SECTIONS ================= -->
+<!-- NOLLYWOOD MOVIES -->
+<section>
 
-<div id="sections"></div>
+  <div class="sectionTitle">
+    <h2>Nollywood Movies</h2>
+    <span class="arrow">›</span>
+  </div>
 
+  <div class="cards" id="nollywood"></div>
+  <div class="cards secondRow" id="nollywood2"></div>
 
-<!-- ================= FOOTER ================= -->
-
-<footer>
-
-<strong>NextRealm</strong>
-
-<br><br>
-
-News • Movies • Series • Entertainment
-
-<br><br>
-
-© 2026 NextRealm
-
-</footer>
+</section>
 
 
-<!-- ================= MORE MENU ================= -->
+<!-- NOLLYWOOD SERIES -->
+<section>
 
-<div class="menu-panel" id="menu">
+  <div class="sectionTitle">
+    <h2>Nollywood Series</h2>
+    <span class="arrow">›</span>
+  </div>
 
-<button onclick="closeMenu()">×</button>
+  <div class="cards" id="nollywoodSeries"></div>
+  <div class="cards secondRow" id="nollywoodSeries2"></div>
 
-<h2>NextRealm</h2>
-
-<a href="index.html">Home</a>
-<a href="news.html">News</a>
-<a href="movies.html">Movies</a>
-<a href="#">Sports</a>
-<a href="#">Technology</a>
-<a href="#">Business</a>
-
-</div>
+</section>
 
 
-<!-- ================= MOVIE POPUP ================= -->
+<!-- HOLLYWOOD MOVIES -->
+<section>
 
-<div class="movie-window" id="movieWindow">
+  <div class="sectionTitle">
+    <h2>Hollywood Movies</h2>
+    <span class="arrow">›</span>
+  </div>
 
-<div class="movie-box">
+  <div class="cards" id="hollywood"></div>
+  <div class="cards secondRow" id="hollywood2"></div>
 
-<img id="popupImage" src="" alt="">
-
-<div class="movie-details">
-
-<button class="close" onclick="closeMovie()">×</button>
-
-<h2 id="popupTitle"></h2>
-
-<p id="popupMeta"></p>
-
-<p id="popupDescription"></p>
-
-<div class="buttons">
-
-<a id="watchLink"
-   class="watch"
-   href="#"
-   target="_blank">
-   ▶ Watch
-</a>
-
-<a id="downloadLink"
-   class="download"
-   href="#"
-   target="_blank">
-   ↓ Download
-</a>
-
-</div>
-
-</div>
-
-</div>
-
-</div>
+</section>
 
 
-<!-- ================= AGE GATE ================= -->
+<!-- HOLLYWOOD SERIES -->
+<section>
 
-<div class="age-gate" id="ageGate">
+  <div class="sectionTitle">
+    <h2>Hollywood Series</h2>
+    <span class="arrow">›</span>
+  </div>
 
-<div class="age-box">
+  <div class="cards" id="hollywoodSeries"></div>
+  <div class="cards secondRow" id="hollywoodSeries2"></div>
 
-<h2>18+ Area</h2>
+</section>
 
-<p>
-This section contains adult-oriented material.
-You must be 18 or older to continue.
-</p>
 
-<div class="age-buttons">
+<!-- ACTION THRILLERS -->
+<section>
 
-<button
-onclick="enterAdult()"
-style="background:#1687ff;color:white;">
-I am 18+
-</button>
+  <div class="sectionTitle">
+    <h2>Action Thrillers</h2>
+    <span class="arrow">›</span>
+  </div>
 
-<button
-onclick="leaveAdult()"
-style="background:#555;color:white;">
-Leave
-</button>
+  <div class="cards" id="action"></div>
+  <div class="cards secondRow" id="action2"></div>
 
-</div>
+</section>
 
-</div>
+
+<!-- K DRAMA -->
+<section>
+
+  <div class="sectionTitle">
+    <h2>K-Drama</h2>
+    <span class="arrow">›</span>
+  </div>
+
+  <div class="cards" id="kdrama"></div>
+  <div class="cards secondRow" id="kdrama2"></div>
+
+</section>
+
+
+<!-- CHINESE MOVIES -->
+<section>
+
+  <div class="sectionTitle">
+    <h2>Chinese Movies</h2>
+    <span class="arrow">›</span>
+  </div>
+
+  <div class="cards" id="chinese"></div>
+  <div class="cards secondRow" id="chinese2"></div>
+
+</section>
+
+
+<!-- COMING SOON -->
+<section class="coming">
+
+  <div class="sectionTitle">
+    <h2>Coming Soon</h2>
+    <span class="arrow">›</span>
+  </div>
+
+  <div class="cards" id="coming"></div>
+  <div class="cards secondRow" id="coming2"></div>
+
+</section>
+
+
+<!-- GIRLS LOVE -->
+<section>
+
+  <div class="sectionTitle">
+    <h2>Girls Love 🔞</h2>
+    <span class="arrow">›</span>
+  </div>
+
+  <div class="cards" id="girls"></div>
+  <div class="cards secondRow" id="girls2"></div>
+
+</section>
+
+
+<!-- BOYS LOVE -->
+<section>
+
+  <div class="sectionTitle">
+    <h2>Boys Love 🔞</h2>
+    <span class="arrow">›</span>
+  </div>
+
+  <div class="cards" id="boys"></div>
+  <div class="cards secondRow" id="boys2"></div>
+
+</section>
+
+
+<!-- EROTICA -->
+<section>
+
+  <div class="sectionTitle">
+    <h2>Erotica 🔞</h2>
+    <span class="arrow">›</span>
+  </div>
+
+  <div class="cards" id="erotica"></div>
+  <div class="cards secondRow" id="erotica2"></div>
+
+</section>
+
+
+<!-- MOVIE POPUP -->
+<div class="modal" id="movieModal">
+
+  <div class="modalBox">
+
+    <button class="close" onclick="closeMovie()">×</button>
+
+    <img id="modalPoster" class="modalPoster">
+
+    <h2 id="modalTitle"></h2>
+
+    <p id="modalInfo"></p>
+
+    <div class="actions">
+
+      <a
+        id="watchButton"
+        class="watch"
+        href="#"
+        target="_blank"
+      >
+        ▶ Watch
+      </a>
+
+      <a
+        id="downloadButton"
+        class="download"
+        href="#"
+        download
+      >
+        ↓ Download
+      </a>
+
+    </div>
+
+  </div>
 
 </div>
 
 
 <script>
 
-/* ==========================================================
-   10 FEATURED MOVIES
-   ========================================================== */
+/* =========================================================
+   FEATURED MOVIES
+   Add more images here. The carousel automatically changes.
+========================================================= */
 
 const featured = [
 
-{
-title:"The Old Guard",
-image:"hero01.jpg",
-meta:"Action • 2020"
-},
+  {
+    title:"Lanterns",
+    image:"movie-posters/lanterns.jpg"
+  },
 
-{
-title:"Lioness",
-image:"hero02.jpg",
-meta:"Series • Action"
-},
+  {
+    title:"The Old Guard",
+    image:"movie-posters/old-guard.jpg"
+  },
 
-{
-title:"Day of the Dead",
-image:"hero03.jpg",
-meta:"Horror • 2020"
-},
+  {
+    title:"The Old Guard 2",
+    image:"movie-posters/old-guard-2.jpg"
+  },
 
-{
-title:"Featured Movie 4",
-image:"hero04.jpg",
-meta:"Action"
-},
+  {
+    title:"Lioness",
+    image:"movie-posters/lioness.jpg"
+  },
 
-{
-title:"Featured Movie 5",
-image:"hero05.jpg",
-meta:"Drama"
-},
+  {
+    title:"Day of the Dead: Bloodline",
+    image:"movie-posters/day-of-the-dead.jpg"
+  },
 
-{
-title:"Featured Movie 6",
-image:"hero06.jpg",
-meta:"Thriller"
-},
+  {
+    title:"Mutiny",
+    image:"movie-posters/mutiny.jpg"
+  },
 
-{
-title:"Featured Movie 7",
-image:"hero07.jpg",
-meta:"Adventure"
-},
+  {
+    title:"Lucky Strike",
+    image:"movie-posters/lucky-strike.jpg"
+  },
 
-{
-title:"Featured Movie 8",
-image:"hero08.jpg",
-meta:"Action"
-},
+  {
+    title:"Alpha",
+    image:"movie-posters/alpha.jpg"
+  },
 
-{
-title:"Featured Movie 9",
-image:"hero09.jpg",
-meta:"Drama"
-},
+  {
+    title:"Spider-Man",
+    image:"movie-posters/spiderman.jpg"
+  },
 
-{
-title:"Featured Movie 10",
-image:"hero10.jpg",
-meta:"Horror"
-}
+  {
+    title:"Reacher",
+    image:"movie-posters/reacher.jpg"
+  }
 
 ];
-
-
-/* ==========================================================
-   FIRST MOVIES
-   ========================================================== */
-
-const firstMovies = [
-
-{
-title:"The Old Guard",
-image:"the-old-guard.jpg",
-meta:"Action • 2020",
-description:"The Old Guard collection.",
-watch:"#",
-download:"#"
-},
-
-{
-title:"Lioness",
-image:"lioness.jpg",
-meta:"Series • All Seasons",
-description:"Lioness series collection.",
-watch:"#",
-download:"#"
-},
-
-{
-title:"Day of the Dead",
-image:"day-of-the-dead.jpg",
-meta:"Horror • Bloodline",
-description:"Day of the Dead: Bloodline.",
-watch:"#",
-download:"#"
-}
-
-];
-
-
-/* ==========================================================
-   CREATE FEATURED SLIDER
-   ========================================================== */
-
-const hero =
-document.getElementById("hero");
-
-featured.forEach((movie,index)=>{
-
-const slide =
-document.createElement("div");
-
-slide.className="hero-slide";
-
-if(index===0){
-slide.classList.add("active");
-}
-
-slide.innerHTML=`
-
-<img src="${movie.image}"
-     alt="${movie.title}">
-
-<div class="hero-dark"></div>
-
-<div class="hero-info">
-
-<h1>${movie.title}</h1>
-
-<p>${movie.meta}</p>
-
-<a href="#"
-class="hero-button"
-onclick="return false;">
-▶ View
-</a>
-
-</div>
-
-`;
-
-hero.appendChild(slide);
-
-});
-
-
-/* ==========================================================
-   AUTOMATIC HERO ROTATION
-   ========================================================== */
 
 let heroIndex=0;
 
-setInterval(()=>{
+function changeHero(){
 
-const slides =
-document.querySelectorAll(".hero-slide");
+  const movie=featured[heroIndex];
 
-if(!slides.length)return;
+  document.getElementById("heroImage").src=movie.image;
+  document.getElementById("heroTitle").textContent=movie.title;
 
-slides[heroIndex]
-.classList.remove("active");
+  heroIndex++;
 
-heroIndex++;
-
-if(heroIndex>=slides.length){
-heroIndex=0;
-}
-
-slides[heroIndex]
-.classList.add("active");
-
-},5000);
-
-
-/* ==========================================================
-   MOVIE CARD
-   ========================================================== */
-
-function makeCard(movie){
-
-const card =
-document.createElement("div");
-
-card.className="movie-card";
-
-card.innerHTML=`
-
-<div class="poster">
-
-<img src="${movie.image}"
-alt="${movie.title}"
-onerror="
-this.style.display='none';
-this.nextElementSibling.style.display='flex';
-">
-
-<div class="poster-placeholder"
-style="display:none;">
-${movie.title}
-</div>
-
-</div>
-
-<div class="movie-title">
-${movie.title}
-</div>
-
-<div class="movie-meta">
-${movie.meta}
-</div>
-
-`;
-
-card.onclick=()=>{
-openMovie(movie);
-};
-
-return card;
+  if(heroIndex>=featured.length){
+    heroIndex=0;
+  }
 
 }
 
-
-/* ==========================================================
-   TOP PICKS — 50 CARDS
-   ========================================================== */
-
-const top =
-document.getElementById("top-picks");
-
-for(let i=1;i<=50;i++){
-
-let movie;
-
-if(i<=3){
-
-movie=firstMovies[i-1];
-
-}else{
-
-movie={
-
-title:"Top Pick "+i,
-
-image:
-"posters/top-pick-"+String(i).padStart(2,"0")+".jpg",
-
-meta:"Featured • 2026",
-
-description:"NextRealm Top Pick",
-
-watch:"#",
-download:"#"
-
-};
-
-}
-
-top.appendChild(makeCard(movie));
-
-}
-
-
-/* ==========================================================
-   SECTIONS
-   ========================================================== */
-
-const sectionList=[
-
-["nollywood-movies","Nollywood Movies","Nollywood"],
-["nollywood-series","Nollywood Series","Nollywood Series"],
-["hollywood-movies","Hollywood Movies","Hollywood"],
-["hollywood-series","Hollywood Series","Hollywood Series"],
-["action-thrillers","Action Thrillers","Action"],
-["kdrama","K-Drama","K-Drama"],
-["chinese","Chinese Movies","Chinese"],
-["coming-soon","Coming Soon","Coming Soon"],
-["girls-love","Girls Love 18+","Girls Love"],
-["boys-love","Boys Love 18+","Boys Love"],
-["erotica","Erotica 18+","Erotica"]
-
-];
-
-const sections =
-document.getElementById("sections");
-
-
-/* ==========================================================
-   CREATE 50 MOVIES FOR EACH SECTION
-   ========================================================== */
-
-sectionList.forEach(section=>{
-
-const id=section[0];
-
-const title=section[1];
-
-const category=section[2];
-
-const adult=
-id==="girls-love" ||
-id==="boys-love" ||
-id==="erotica";
-
-const box =
-document.createElement("section");
-
-box.className="section";
-
-box.id=id;
-
-box.innerHTML=`
-
-<div class="section-heading">
-
-<h2>${title}</h2>
-
-</div>
-
-<div class="movie-scroll">
-
-<div class="movie-row"></div>
-
-</div>
-
-`;
-
-sections.appendChild(box);
-
-const row =
-box.querySelector(".movie-row");
-
-for(let i=1;i<=50;i++){
-
-let movie;
-
-if(
-id==="nollywood-movies" &&
-i<=3
-){
-
-movie=firstMovies[i-1];
-
-}else{
-
-movie={
-
-title:category+" "+i,
-
-image:
-"posters/"+id+"-"+String(i).padStart(2,"0")+".jpg",
-
-meta:category+" • 2026",
-
-description:title+" title "+i,
-
-watch:"#",
-download:"#"
-
-};
-
-}
-
-const card=makeCard(movie);
-
-if(adult){
-
-card.onclick=(event)=>{
-
-event.stopPropagation();
-
-if(localStorage.getItem(
-"nextrealm18"
-)!=="yes"){
-
-document
-.getElementById("ageGate")
-.classList.add("show");
-
-}else{
-
-openMovie(movie);
-
-}
-
-};
-
-}
-
-row.appendChild(card);
-
-}
-
-});
-
-
-/* ==========================================================
-   SEARCH
-   ========================================================== */
-
-function searchMovies(){
-
-const query =
-document.getElementById("search")
-.value
-.toLowerCase();
-
-document
-.querySelectorAll(".movie-card")
-.forEach(card=>{
-
-const title =
-card.querySelector(".movie-title")
-.textContent
-.toLowerCase();
-
-card.style.display =
-!query ||
-title.includes(query)
-? "block"
-: "none";
-
-});
-
-}
-
-
-/* ==========================================================
-   MOVIE POPUP
-   ========================================================== */
-
-function openMovie(movie){
-
-document.getElementById(
-"popupImage"
-).src=movie.image;
-
-document.getElementById(
-"popupTitle"
-).textContent=movie.title;
-
-document.getElementById(
-"popupMeta"
-).textContent=movie.meta;
-
-document.getElementById(
-"popupDescription"
-).textContent=
-movie.description;
-
-document.getElementById(
-"watchLink"
-).href=movie.watch || "#";
-
-document.getElementById(
-"downloadLink"
-).href=movie.download || "#";
-
-document
-.getElementById("movieWindow")
-.classList.add("show");
-
-}
-
-
-function closeMovie(){
-
-document
-.getElementById("movieWindow")
-.classList.remove("show");
-
-}
-
-
-/* ==========================================================
-   MORE MENU
-   ========================================================== */
-
-function openMenu(){
-
-document
-.getElementById("menu")
-.classList.add("open");
-
-}
-
-
-function closeMenu(){
-
-document
-.getElementById("menu")
-.classList.remove("open");
-
-}
-
-
-/* ==========================================================
-   AGE GATE
-   ========================================================== */
-
-function enterAdult(){
-
-localStorage.setItem(
-"nextrealm18",
-"yes"
-);
-
-document
-.getElementById("ageGate")
-.classList.remove("show");
-
-}
-
-
-function leaveAdult(){
-
-window.location.href="index.html";
-
-}
-
-</script>
-
-</body>
-</html>
+setInterval(changeHero,4000);
+
+
+/* =========================================================
+   MOVIE DATA
+========================================================= */
+
+const movies = {
+
+  topPicks:[
+    ["Mutiny","movie-posters/mutiny.jpg"],
+    ["Spider-Man","movie-posters/spiderman.jpg"],
+    ["Lanterns","movie-posters/lanterns.jpg"],
+    ["The Old Guard","movie-posters/old-guard.jpg"],
+    ["The Old Guard 2","movie-posters/old-guard-2.jpg"],
+    ["Lioness","movie-posters/lioness.jpg"],
+    ["Day of the Dead","movie-posters/day-of-the-dead.jpg"],
+    ["Reacher","movie-posters/reacher.jpg"],
+    ["Lucky Strike","movie-posters/lucky-strike.jpg"],
+    ["The Beekeeper","movie-posters/beekeeper.jpg"],
+
+    ["Alpha","movie-posters/alpha.jpg"],
+    ["Iron Lung","movie-posters/iron-lung.jpg"],
+    ["Masters of the Universe","movie-posters/masters.jpg"],
+    ["Supergirl","movie-posters/supergirl.jpg"],
+    ["Prison Break","movie-posters/prison-break.jpg"],
+    ["Outer Banks","movie-posters/outer-banks.jpg"],
+    ["Women in Blue","movie-posters/women-in-blue.jpg"],
+    ["School Trip","movie-posters/school-trip.jpg"],
+    ["Lingashoni","movie-posters/lingashoni.jpg"],
+    ["To Kill a Monkey","movie-posters/to-kill-a-monkey.jpg"],
+
+    ["Where Is Mr. Right?","movie-posters/mr-right.jpg"],
+    ["Twin Love","movie-posters/twin-love.jpg"],
+    ["Okanjuwa","movie-posters/okanjuwa.jpg"],
+    ["Childhood Sweethearts","movie-posters/childhood.jpg"],
+    ["An Oriental Odyssey","movie-posters/oriental.jpg"]
+  ],
+
+
+  nollywood:[
+    ["Where Is Mr. Right?","movie-posters/mr-right.jpg"],
+    ["Twin Love","movie-posters/twin-love.jpg"],
+    ["Okanjuwa","movie-posters/okanjuwa.jpg"],
+    ["School Trip","movie-posters/school-trip.jpg"],
+    ["Lingashoni","movie-posters/lingashoni.jpg"],
+    ["To Kill a Monkey","movie-posters/to-kill-a-monkey.jpg"],
+    ["The Black Book","movie-posters/black-book.jpg"],
+    ["A Tribe Called Judah","movie-posters/tribe.jpg"],
+    ["Blood Vessel","movie-posters/blood-vessel.jpg"],
+    ["Afamefuna","movie-posters/afamefuna.jpg"],
+
+    ["The Wait","movie-posters/the-wait.jpg"],
+    ["Chief Daddy","movie-posters/chief-daddy.jpg"],
+    ["Living in Bondage","movie-posters/living.jpg"],
+    ["Citation","movie-posters/citation.jpg"],
+    ["Jagun Jagun","movie-posters/jagun.jpg"],
+    ["Anikulapo","movie-posters/anikulapo.jpg"],
+    ["Gangs of Lagos","movie-posters/gangs.jpg"],
+    ["Brotherhood","movie-posters/brotherhood.jpg"],
+    ["Battle on Buka Street","movie-posters/battle.jpg"],
+    ["King of Boys","movie-posters/king-of-boys.jpg"],
+
+    ["Shanty Town","movie-posters/shanty-town.jpg"],
+    ["The Black Mail","movie-posters/black-mail.jpg"],
+    ["Kesari","movie-posters/kesari.jpg"],
+    ["Ada Omo Daddy","movie-posters/ada.jpg"],
+    ["Something Like Gold","movie-posters/gold.jpg"]
+  ],
+
+
+  nollywoodSeries:[
+    ["School Trip Season 1","movie-posters/school-trip.jpg"],
+    ["Lingashoni Season 1","movie-posters/lingashoni.jpg"],
+    ["To Kill a Monkey","movie-posters/to-kill-a-monkey.jpg"],
+    ["Shanty Town","movie-posters/shanty-town.jpg"],
+    ["House of Ga'a","movie-posters/house.jpg"],
+
+    ["The Secret Lives of Baba Segi","movie-posters/baba-segi.jpg"],
+    ["Blood Sisters","movie-posters/blood-sisters.jpg"],
+    ["Far From Home","movie-posters/far-from-home.jpg"],
+    ["Anikulapo: Rise of the Spectre","movie-posters/spectre.jpg"],
+    ["King of Boys","movie-posters/king-of-boys.jpg"],
+
+    ["Wura","movie-posters/wura.jpg"],
+    ["The Smart Money Woman","movie-posters/smart-money.jpg"],
+    ["Skinny Girl in Transit","movie-posters/skinny.jpg"],
+    ["Castle & Castle","movie-posters/castle.jpg"],
+    ["The Johnsons","movie-posters/johnsons.jpg"],
+
+    ["Jenifa's Diary","movie-posters/jenifa.jpg"],
+    ["Tinsel","movie-posters/tinsel.jpg"],
+    ["Battleground","movie-posters/battleground.jpg"],
+    ["Rumour Has It","movie-posters/rumour.jpg"],
+    ["Sistas","movie-posters/sistas.jpg"],
+
+    ["Africa Magic Series","movie-posters/africa-magic.jpg"],
+    ["My Name Is A-Zed","movie-posters/az.jpg"],
+    ["The Other News","movie-posters/news.jpg"],
+    ["Industreet","movie-posters/industreet.jpg"],
+    ["Hush","movie-posters/hush.jpg"]
+  ],
+
+
+  hollywood:[
+    ["Supergirl: Woman of Tomorrow","movie-posters/supergirl.jpg"],
+    ["Masters of the Universe","movie-posters/masters.jpg"],
+    ["Iron Lung","movie-posters/iron-lung.jpg"],
+    ["Mutiny","movie-posters/mutiny.jpg"],
+    ["The Beekeeper","movie-posters/beekeeper.jpg"],
+
+    ["Lucky Strike","movie-posters/lucky-strike.jpg"],
+    ["Alpha","movie-posters/alpha.jpg"],
+    ["Spider-Man","movie-posters/spiderman.jpg"],
+    ["Reacher","movie-posters/reacher.jpg"],
+    ["The Old Guard","movie-posters/old-guard.jpg"],
+
+    ["The Old Guard 2","movie-posters/old-guard-2.jpg"],
+    ["Day of the Dead","movie-posters/day-of-the-dead.jpg"],
+    ["Prison Break","movie-posters/prison-break.jpg"],
+    ["Lanterns","movie-posters/lanterns.jpg"],
+    ["Mission Impossible","movie-posters/mission.jpg"],
+
+    ["John Wick","movie-posters/john-wick.jpg"],
+    ["Extraction","movie-posters/extraction.jpg"],
+    ["Nobody","movie-posters/nobody.jpg"],
+    ["The Equalizer","movie-posters/equalizer.jpg"],
+    ["Top Gun","movie-posters/top-gun.jpg"],
+
+    ["Gladiator","movie-posters/gladiator.jpg"],
+    ["Avatar","movie-posters/avatar.jpg"],
+    ["Black Panther","movie-posters/black-panther.jpg"],
+    ["Avengers","movie-posters/avengers.jpg"],
+    ["The Batman","movie-posters/batman.jpg"]
+  ],
+
+
+  hollywoodSeries:[
+    ["Lioness Season 1","movie-posters/lioness.jpg"],
+    ["Lioness Season 2","movie-posters/lioness.jpg"],
+    ["Reacher Season 1","movie-posters/reacher.jpg"],
+    ["Reacher Season 2","movie-posters/reacher.jpg"],
+    ["Reacher Season 3","movie-posters/reacher.jpg"],
+
+    ["Reacher Season 4","movie-posters/reacher.jpg"],
+    ["Outer Banks Season 1","movie-posters/outer-banks.jpg"],
+    ["Outer Banks Season 2","movie-posters/outer-banks.jpg"],
+    ["Outer Banks Season 3","movie-posters/outer-banks.jpg"],
+    ["Outer Banks Season 4","movie-posters/outer-banks.jpg"],
+
+    ["Prison Break Season 1","movie-posters/prison-break.jpg"],
+    ["Prison Break Season 2","movie-posters/prison-break.jpg"],
+    ["Prison Break Season 3","movie-posters/prison-break.jpg"],
+    ["Prison Break Season 4","movie-posters/prison-break.jpg"],
+    ["Prison Break Season 5","movie-posters/prison-break.jpg"],
+
+    ["The Vampire Diaries","movie-posters/vampire.jpg"],
+    ["Stranger Things","movie-posters/stranger.jpg"],
+    ["The Last of Us","movie-posters/last-of-us.jpg"],
+    ["Wednesday","movie-posters/wednesday.jpg"],
+    ["The Boys","movie-posters/the-boys.jpg"],
+
+    ["Breaking Bad","movie-posters/breaking-bad.jpg"],
+    ["The Walking Dead","movie-posters/walking-dead.jpg"],
+    ["House of the Dragon","movie-posters/dragon.jpg"],
+    ["Game of Thrones","movie-posters/game.jpg"],
+    ["The Witcher","movie-posters/witcher.jpg"]
+  ],
+
+
+  action:[
+    ["Mutiny","movie-posters/mutiny.jpg"],
+    ["Lucky Strike","movie-posters/lucky-strike.jpg"],
+    ["Alpha","movie-posters/alpha.jpg"],
+    ["The Beekeeper","movie-posters/beekeeper.jpg"],
+    ["The Old Guard","movie-posters/old-guard.jpg"],
+
+    ["The Old Guard 2","movie-posters/old-guard-2.jpg"],
+    ["Extraction","movie-posters/extraction.jpg"],
+    ["John Wick","movie-posters/john-wick.jpg"],
+    ["Nobody","movie-posters/nobody.jpg"],
+    ["Equalizer","movie-posters/equalizer.jpg"],
+
+    ["Reacher","movie-posters/reacher.jpg"],
+    ["Mission Impossible","movie-posters/mission.jpg"],
+    ["Gladiator","movie-posters/gladiator.jpg"],
+    ["Top Gun","movie-posters/top-gun.jpg"],
+    ["Black Panther","movie-posters/black-panther.jpg"],
+
+    ["Avengers","movie-posters/avengers.jpg"],
+    ["The Batman","movie-posters/batman.jpg"],
+    ["Venom","movie-posters/venom.jpg"],
+    ["Mad Max","movie-posters/mad-max.jpg"],
+    ["Furiosa","movie-posters/furiosa.jpg"],
+
+    ["Die Hard","movie-posters/die-hard.jpg"],
+    ["Taken","movie-posters/taken.jpg"],
+    ["Olympus Has Fallen","movie-posters/olympus.jpg"],
+    ["Sicario","movie-posters/sicario.jpg"],
+    ["13 Hours","movie-posters/13-hours.jpg"]
+  ],
+
+
+  kdrama:[
+    ["Squid Game","movie-posters/squid-game.jpg"],
+    ["Moving","movie-posters/moving.jpg"],
+    ["Vincenzo","movie-posters/vincenzo.jpg"],
+    ["The Glory","movie-posters/glory.jpg"]
