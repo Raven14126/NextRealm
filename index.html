@@ -70,6 +70,126 @@ News • Sports • Tech • Cybersecurity • Movies • Business
 <a href="business.html">Business</a>
 <a href="about.html">About</a>
 <a href="contact.html">Contact</a></nav>
+<!-- NEXTREALM LIVE WEATHER & LOCAL TIME -->
+<section id="world-weather" style="margin:20px 10px;padding:18px;background:#172554;color:white;border-radius:12px;text-align:center;">
+  <h2>🌍 Your Local Weather & Time</h2>
+  <p id="weather-location">Detecting your location...</p>
+  <div id="weather-condition" style="font-size:22px;">Checking weather...</div>
+  <h2 id="weather-temperature" style="font-size:38px;">--°C</h2>
+  <p id="weather-details">Please wait...</p>
+  <h3 id="local-time">--:--:--</h3>
+  <p id="local-date"></p>
+  <button onclick="detectWeather()" style="padding:10px 18px;border:0;border-radius:7px;background:#facc15;color:#111827;font-weight:bold;">
+    Refresh Weather
+  </button>
+  <p id="weather-error" style="font-size:13px;"></p>
+</section>
+
+<script>
+let visitorTimeZone = null;
+let timeTimer = null;
+
+function detectWeather() {
+  const error = document.getElementById("weather-error");
+  error.textContent = "Requesting location permission...";
+
+  if (!navigator.geolocation) {
+    error.textContent = "Location detection is not supported by this browser.";
+    return;
+  }
+
+  navigator.geolocation.getCurrentPosition(async position => {
+    const lat = position.coords.latitude;
+    const lon = position.coords.longitude;
+
+    try {
+      const response = await fetch(
+        `https://api.open-meteo.com/v1/forecast?latitude=${lat}&longitude=${lon}&current=temperature_2m,relative_humidity_2m,apparent_temperature,precipitation,weather_code,wind_speed_10m,is_day&timezone=auto`
+      );
+
+      if (!response.ok) throw new Error("Weather service unavailable");
+
+      const data = await response.json();
+      const weather = data.current;
+
+      visitorTimeZone = data.timezone;
+
+      const conditions = {
+        0: "☀️ Clear sky",
+        1: "🌤️ Mainly clear",
+        2: "⛅ Partly cloudy",
+        3: "☁️ Overcast",
+        45: "🌫️ Fog",
+        48: "🌫️ Freezing fog",
+        51: "🌦️ Light drizzle",
+        53: "🌦️ Drizzle",
+        55: "🌧️ Heavy drizzle",
+        61: "🌧️ Light rain",
+        63: "🌧️ Rain",
+        65: "🌧️ Heavy rain",
+        71: "🌨️ Light snow",
+        73: "🌨️ Snow",
+        75: "❄️ Heavy snow",
+        80: "🌦️ Rain showers",
+        81: "🌧️ Rain showers",
+        82: "⛈️ Heavy rain showers",
+        95: "⛈️ Thunderstorm",
+        96: "⛈️ Thunderstorm with hail",
+        99: "⛈️ Heavy thunderstorm"
+      };
+
+      document.getElementById("weather-location").textContent =
+        "Your detected location • " + data.timezone;
+
+      document.getElementById("weather-condition").textContent =
+        conditions[weather.weather_code] || "Weather condition unavailable";
+
+      document.getElementById("weather-temperature").textContent =
+        Math.round(weather.temperature_2m) + "°C";
+
+      document.getElementById("weather-details").textContent =
+        `Feels like ${weather.apparent_temperature}°C • Humidity ${weather.relative_humidity_2m}% • Wind ${weather.wind_speed_10m} km/h`;
+
+      error.textContent = "Weather updated successfully.";
+
+      updateLocalTime();
+      if (timeTimer) clearInterval(timeTimer);
+      timeTimer = setInterval(updateLocalTime, 1000);
+
+    } catch (e) {
+      error.textContent = "Couldn't load weather. Please try again.";
+    }
+
+  }, () => {
+    error.textContent = "Location permission denied. Allow location access and refresh.";
+  }, { enableHighAccuracy: false, timeout: 15000 });
+}
+
+function updateLocalTime() {
+  if (!visitorTimeZone) return;
+
+  const now = new Date();
+
+  document.getElementById("local-time").textContent =
+    new Intl.DateTimeFormat("en-GB", {
+      timeZone: visitorTimeZone,
+      hour: "2-digit",
+      minute: "2-digit",
+      second: "2-digit"
+    }).format(now);
+
+  document.getElementById("local-date").textContent =
+    new Intl.DateTimeFormat("en-GB", {
+      timeZone: visitorTimeZone,
+      weekday: "long",
+      day: "numeric",
+      month: "long",
+      year: "numeric"
+    }).format(now);
+}
+
+detectWeather();
+</script>
 <marquee style="background:#ffcc00; color:black; padding:8px; font-weight:bold;">
 🔥 BREAKING: Spain win World Cup 2026 • Latest AI news • Transfer rumors • Tech updates • Cybersecurity alerts
 </marquee>
